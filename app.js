@@ -11,11 +11,11 @@ var app = new Vue({
   },
   computed: {
     left : function() {
-      let str = this.source
+      let str = this.source.replace(/[^a-z]/ig, '')
       const invalidLetters = []
       for(var i in this.target) {
         const letter = this.target[i]
-        if (letter !== ' ') {
+        if (letter.match(/[a-z]/i)) {
           const re = new RegExp(letter, 'i')
           if (str.match(re)) {
             str = str.replace(re, '')
