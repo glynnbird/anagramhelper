@@ -29,10 +29,11 @@
               <md-input v-model="left" readonly></md-input>
               <span class="md-helper-text">These are the characters you've yet to use</span>
             </md-field>
-            <md-field>
+            <md-field :class="messageClass">
               <label>Anagram</label>
               <md-input v-model="target"></md-input>
               <span class="md-helper-text">Type your anagram here</span>
+              <span class="md-error">{{ error }}</span>
             </md-field>
           </md-app-content>
         </md-app>
