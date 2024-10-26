@@ -1,0 +1,47 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta content="width=device-width,initial-scale=1,minimal-ui" name="viewport">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic|Material+Icons">
+    <link rel="stylesheet" href="https://unpkg.com/vue-material/dist/vue-material.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/vue-material/dist/theme/default.css">
+    <style>      
+      [v-cloak] { display: none; }
+    </style>
+    <title>Anagram maker</title>
+    <link rel="manifest" href="/anagram.webmanifest" />
+  </head>
+  <body>
+    <div id="app" v-cloak>
+      <div class="page-container">
+        <md-app>
+          <md-app-toolbar class="md-primary" style="background-color: #009688">
+            <span class="md-title">Anagram Helper</span>
+          </md-app-toolbar>
+          <md-app-content>
+            <md-field>
+              <label>Source string</label>
+              <md-input v-model="source"></md-input>
+              <span class="md-helper-text">This is the string you want to make the anagram out of</span>
+            </md-field>
+            <md-field>
+              <label>Characters left</label>
+              <md-input v-model="left" readonly></md-input>
+              <span class="md-helper-text">These are the characters you've yet to use</span>
+            </md-field>
+            <md-field :class="messageClass">
+              <label>Anagram</label>
+              <md-input v-model="target"></md-input>
+              <span class="md-helper-text">Type your anagram here</span>
+              <span class="md-error">{{ error }}</span>
+            </md-field>
+          </md-app-content>
+        </md-app>
+      </div>
+    </div>
+    <script src="https://unpkg.com/vue@2.6.11/dist/vue.js"></script>
+    <script src="https://unpkg.com/vue-material"></script>
+    <script src="app.js"></script>
+  </body>
+</html> 
