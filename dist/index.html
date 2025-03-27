@@ -3,45 +3,87 @@
   <head>
     <meta charset="utf-8">
     <meta content="width=device-width,initial-scale=1,minimal-ui" name="viewport">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic|Material+Icons">
-    <link rel="stylesheet" href="https://unpkg.com/vue-material/dist/vue-material.min.css">
-    <link rel="stylesheet" href="https://unpkg.com/vue-material/dist/theme/default.css">
-    <style>      
-      [v-cloak] { display: none; }
-    </style>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vuetify@3.7.19/dist/vuetify.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@latest/css/materialdesignicons.min.css" />
+    <link rel="stylesheet" href="https://fonts.bunny.net/css?family=roboto:400,500,700" />
+    <script type="importmap">
+    {
+      "imports": {
+        "vue": "https://cdn.jsdelivr.net/npm/vue@3.5.13/dist/vue.esm-browser.js",
+        "vuetify": "https://cdn.jsdelivr.net/npm/vuetify@3.7.19/dist/vuetify.esm.js"
+      }
+    }
+    </script>
     <title>Anagram maker</title>
     <link rel="manifest" href="/anagram.webmanifest" />
   </head>
   <body>
-    <div id="app" v-cloak>
-      <div class="page-container">
-        <md-app>
-          <md-app-toolbar class="md-primary" style="background-color: #009688">
-            <span class="md-title">Anagram Helper</span>
-          </md-app-toolbar>
-          <md-app-content>
-            <md-field>
-              <label>Source string</label>
-              <md-input v-model="source"></md-input>
-              <span class="md-helper-text">This is the string you want to make the anagram out of</span>
-            </md-field>
-            <md-field>
-              <label>Characters left</label>
-              <md-input v-model="left" readonly></md-input>
-              <span class="md-helper-text">These are the characters you've yet to use</span>
-            </md-field>
-            <md-field :class="messageClass">
-              <label>Anagram</label>
-              <md-input v-model="target"></md-input>
-              <span class="md-helper-text">Type your anagram here</span>
-              <span class="md-error">{{ error }}</span>
-            </md-field>
-          </md-app-content>
-        </md-app>
-      </div>
-    </div>
-    <script src="https://unpkg.com/vue@2.6.11/dist/vue.js"></script>
-    <script src="https://unpkg.com/vue-material"></script>
-    <script src="app.js"></script>
+    <v-layout id="app">
+      <v-app theme="light">
+        <v-app-bar density="compact" color="#009688">
+          <v-app-bar-title style="user-select:none;">Anagram Helper</v-app-bar-title>
+        </v-app-bar>
+        <v-main>
+          <v-container fluid>
+            <v-text-field label="Source String" v-model="source" hint="This is the string you want to make the anagram out of"></v-text-field>
+            <v-text-field label="Characters left" v-model="left" readonly hint="These are the characters you've yet to use"></v-text-field>
+            <v-text-field label="Anagram" v-model="target" hint="Type your anagram here"></v-text-field>
+          </v-container>
+        </v-main>
+      </v-app>
+    </v-layout>
+
+    <script type="module">
+      // imports
+      import { createApp, ref, computed } from "vue"
+      import { createVuetify } from "vuetify"
+
+      // use vuetify for UI
+      const vuetify = createVuetify()
+      
+      // create Vue.js app
+      createApp({
+        setup() {
+          // app state
+          const source = ref('Taylor Swift')
+          const target = ref('')
+          const error = ref('')
+      
+          // calculate letters left - computed dynamically from source
+          const left = computed(function () {
+            let str = source.value.replace(/[^a-z]/ig, '')
+            const invalidLetters = []
+            for(var i in target.value) {
+              const letter = target.value[i]
+              if (letter.match(/[a-z]/i)) {
+                const re = new RegExp(letter, 'i')
+                if (str.match(re)) {
+                  str = str.replace(re, '')
+                } else {
+                  invalidLetters.push(letter)
+                }
+      
+              }
+            }
+            if (invalidLetters.length > 0) {
+              error.value = 'Invalid letters: ' + invalidLetters.join(' ')
+            } else {
+              error.value = ''
+            }
+            str = str.toLowerCase().split('').sort().join('')
+            return str
+          })
+
+          // make state available
+          return {
+            source,
+            target,
+            error,
+            left
+          }
+        }
+      }).use(vuetify).mount('#app')
+
+    </script>
   </body>
 </html> 
