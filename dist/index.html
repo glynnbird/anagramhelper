@@ -28,6 +28,7 @@
             <v-text-field label="Source String" v-model="source" hint="This is the string you want to make the anagram out of"></v-text-field>
             <v-text-field label="Characters left" v-model="left" readonly hint="These are the characters you've yet to use"></v-text-field>
             <v-text-field label="Anagram" v-model="target" hint="Type your anagram here"></v-text-field>
+            <v-alert color="error" v-if="error">{{ error }}</v-alert>
           </v-container>
         </v-main>
       </v-app>
